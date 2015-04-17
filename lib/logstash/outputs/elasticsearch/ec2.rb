@@ -9,6 +9,8 @@ module LogStash::Outputs::ElasticSearch::Ec2
 
   def create_options
 
+    config :discovery, :validate => ['zen', 'ec2'], :default => 'zen'
+
     config :aws_access_key, :validate => :string
 
     config :aws_secret_key, :validate => :string
@@ -29,14 +31,17 @@ module LogStash::Outputs::ElasticSearch::Ec2
 
   def self.create_client_config(plugin)
      settings = {}
-     settings['cloud.aws.access_key'] = plugin.aws_access_key if plugin.aws_access_key
-     settings['cloud.aws.secret_key'] = plugin.aws_secret_key if plugin.aws_secret_key
-     settings['cloud.aws.protocol'] = plugin.aws_protocol if plugin.aws_protocol
-     settings['cloud.aws.protocol.s3.protocol'] = plugin.s3_protocol if plugin.s3_protocol
-     settings['cloud.aws.protocol.ec2.protocol'] = plugin.ec2_protocol if plugin.ec2_protocol
-     settings['cloud.aws.proxy_host'] = plugin.aws_proxy_host if plugin.aws_proxy_host
-     settings['cloud.aws.proxy_port'] = plugin.aws_proxy_port if plugin.aws_proxy_port
-     settings['cloud.aws.region'] = plugin.aws_region if plugin.aws_region
+     if plugin.discovery == 'ec2'
+       settings['discovery.type'] = plugin.discovery
+       settings['cloud.aws.access_key'] = plugin.aws_access_key if plugin.aws_access_key
+       settings['cloud.aws.secret_key'] = plugin.aws_secret_key if plugin.aws_secret_key
+       settings['cloud.aws.protocol'] = plugin.aws_protocol if plugin.aws_protocol
+       settings['cloud.aws.protocol.s3.protocol'] = plugin.s3_protocol if plugin.s3_protocol
+       settings['cloud.aws.protocol.ec2.protocol'] = plugin.ec2_protocol if plugin.ec2_protocol
+       settings['cloud.aws.proxy_host'] = plugin.aws_proxy_host if plugin.aws_proxy_host
+       settings['cloud.aws.proxy_port'] = plugin.aws_proxy_port if plugin.aws_proxy_port
+       settings['cloud.aws.region'] = plugin.aws_region if plugin.aws_region
+     end
      settings
   end
 
