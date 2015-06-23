@@ -25,7 +25,7 @@ module LogStash::Outputs::ElasticSearch::Ec2
 
     config :aws_proxy_port, :validate => :number
 
-    config :aws_region, :validate => ['us-east-1', 'us-west-1', 'us-west-2', 'ap-southeast-1', 'ap-southeast-2', 'ap-northeast-1', 'eu-west-1', 'sa-east-1' ]
+    config :aws_region, :validate => ['us-east-1', 'us-west-1', 'us-west-2', 'ap-southeast-1', 'ap-southeast-2', 'ap-northeast-1', 'eu-central-1', 'eu-west-1', 'sa-east-1' ]
 
   end
 
